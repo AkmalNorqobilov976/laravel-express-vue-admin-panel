@@ -1,14 +1,36 @@
 <template>
   <el-main>
-    <el-button type="success" @click="$router.push('/cargos/create')"
+    <el-button
+      type="success"
+      @click="$router.push('/packages/cab-orders/create')"
       >Qo'shish</el-button
     >
-    <data-table ref="cargoDataTable" :columns="cargoColumns" :getData="getData">
+    <data-table
+      ref="cabOrderDataTable"
+      :columns="cabOrdersColumns"
+      :getData="getData"
+    >
+      <div slot="from_region" slot-scope="{ row }">
+        {{ row.from_region.name }}
+      </div>
+      
+      <div slot="from_district" slot-scope="{ row }">
+        {{ row.from_district.name }}
+      </div>
+
+      <div slot="to_region" slot-scope="{ row }">
+        {{ row.to_region.name }}
+      </div>
+      
+      <div slot="to_district" slot-scope="{ row }">
+        {{ row.to_district.name }}
+      </div>
+
       <div slot="actions" slot-scope="{ row }">
         <el-button
           type="danger"
           icon="el-icon-delete"
-          @click="deleteCargo(row.id)"
+          @click="deleteCabOrder(row.id)"
           round
           size="small"
         ></el-button>
@@ -16,7 +38,7 @@
           icon="el-icon-edit"
           round
           size="small"
-          @click="$router.push(`/cargos/update/${row.id}`)"
+          @click="$router.push(`/packages/cab-orders/update/${row.id}`)"
         ></el-button>
       </div>
     </data-table>
@@ -25,18 +47,29 @@
 
 <script>
 import DataTable from "@/components/DataTable.vue";
-import { getCargosByPagination } from "@/api/cargo";
-import { getErrorMessage } from "@/utils/error-message";
+import { getCabOrdersByPagination } from "@/api/cab-order";
 export default {
   data: () => ({
-    cargoColumns: [
+    cabOrdersColumns: [
       {
-        prop: "from_region_id",
+        prop: "id",
+        label: "#ID",
+      },
+      {
+        prop: "from_region",
         label: "Qaysi viloyatdan",
       },
       {
-        prop: "to_region_id",
+        prop: "from_district",
+        label: "Qaysi tumandan",
+      },
+      {
+        prop: "to_region",
         label: "Qaysi viloyatga",
+      },
+      {
+        prop: "to_district",
+        label: "Qaysi tumanga",
       },
       {
         prop: "actions",
@@ -47,25 +80,26 @@ export default {
   components: { DataTable },
   methods: {
     getData({ page, query, sortParams }) {
-      return getCargosByPagination(page).then((response) => {
+      return getCabOrdersByPagination(page).then((response) => {
         let { data } = response;
+        console.log(data);
         return {
           data: data.data,
           total: data.meta.total,
         };
       });
     },
-    deleteCargo(cargoId) {
+    deleteCabOrder(cabOrderId) {
       this.$confirm("Ushbu yukni rostan ham o'chirmoqchisizmi?").then(() => {
         this.$store
-          .dispatch("cargo/deleteCargo", cargoId)
+          .dispatch("cab-order/deleteCabOrder", cabOrderId)
           .then(() => {
             this.$message({
               showClose: true,
               message: "Muvaffaqiyatli o'chirildi!!!",
               type: "success",
             });
-            this.$refs.cargoDataTable.getTableData();
+            this.$refs.cabOrderDataTable.getTableData();
           })
           .catch((error) => {
             this.$message({

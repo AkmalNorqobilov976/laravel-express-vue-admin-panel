@@ -88,7 +88,22 @@ export const constantRoutes = [
         path: 'regions',
         name: 'Regions',
         component: () => import('@/views/location/regions/index'),
-        meta: { title: 'Viloyatlar' }
+        meta: { title: 'Viloyatlar' },
+
+      },
+      {
+        path: '/location/regions/create',
+        name: "Create-Region",
+        hidden: true,
+        component: () => import('@/views/location/regions/create'),
+        meta: { title: 'Yangi viloyat qo\'shish' }
+      },
+      {
+        path: '/location/regions/update/:id',
+        name: "Update-Region",
+        hidden: true,
+        component: () => import('@/views/location/regions/update'),
+        meta: { title: "Viloyatni yangilash" }
       },
       {
         path: 'districts',
@@ -102,7 +117,7 @@ export const constantRoutes = [
   {
     path: '/orders',
     component: Layout,
-    // redirect: '/orders/packages/package',
+    redirect: '/orders/packages',
     name: 'Orders',
     meta: {
       title: 'Buyurtmalar',
@@ -110,32 +125,69 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: '/packages',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Packages',
-        meta: { title: 'Buyurtmalar' },
+        path: 'packages',
+        component: () => import('@/views/orders/packages/index'), // Parent router-view
+        name: 'packages',
+        meta: { title: 'Pochtalar' },
         children: [
           {
-            path: '/package',
-            component: () => import('@/views/orders/packages/package/index'),
-            name: 'Buyurtma',
-            meta: { title: 'Buyurtma' }
+            path: "package",
+            component: ()=>import('@/views/orders/packages/index'),
+            name: 'package',
+            meta: { title: 'Pochta' },
+            children: [
+              {
+                path: '',
+                name: "package-index",
+                hidden: true,
+                component: () => import('@/views/orders/packages/package/index'),
+
+              },
+              {
+                path: "create",
+                name: "create-package",
+                hidden: true,
+                component: ()=> import('@/views/orders/packages/package/create'),
+                meta: {title: "Qo'shish"}
+              },
+              {
+                path: "/orders/package/package/update/:id",
+                name: "update-package",
+                hidden: true,
+                component: ()=> import('@/views/orders/packages/package/update'),
+                meta: {title: "Qo'shish"}
+              }
+            ]
           },
           {
             path: '/package-list',
             component: () => import('@/views/orders/packages/package-list/index'),
             name: 'Package-list',
-            meta: { title: 'Buyurtmalar ro\'yxati' },
+            meta: { title: 'Pochtalar ro\'yxati' },
           },
 
         ]
       },
       {
-        path: '/car-orders',
-        name: 'Car-orders',
-        component: () => import('@/views/orders/car-orders/index'),
-        meta: { title: "Yo'lda" }
+        path: '/cab-orders',
+        name: 'car-orders',
+        component: () => import('@/views/orders/cab-orders/index'),
+        meta: { title: "Yo'lovchilar" },
       },
+      {
+        path: '/packages/cab-orders/create',
+        name: "create-cab-order",
+        hidden: true,
+        meta: { title: "Qo'shish" },
+        component: () => import('@/views/orders/cab-orders/create')
+      },
+      {
+        path: '/packages/cab-orders/update/:id',
+        name: "update-cab-order",
+        hidden: true,
+        meta: { title: "Yangilash" },
+        component: () => import('@/views/orders/cab-orders/update')
+      }
 
     ]
   },
@@ -144,48 +196,114 @@ export const constantRoutes = [
     path: '/cargos',
     component: Layout,
     // redirect: '/cargos',
-    children: [{
-      path: '/cargos',
-      name: 'Yuklar',
-      component: () => import('@/views/cargos/index'),
-      meta: { title: 'Yuklar' }
-    }]
+    children: [
+      {
+        path: '/cargos',
+        name: 'cargos',
+        component: () => import('@/views/cargos/index'),
+        meta: { title: 'Yuklar' }
+      },
+      {
+        path: '/cargos/create',
+        name: "create-cargo",
+        hidden: true,
+        meta: { title: "Qo'shish" },
+        component: () => import('@/views/cargos/create')
+      },
+      {
+        path: '/cargos/update/:id',
+        name: "update-cargo",
+        hidden: true,
+        meta: { title: "Yangilash" },
+        component: () => import('@/views/cargos/update')
+      }
+    ]
   },
 
   {
     path: '/transports',
     component: Layout,
     redirect: '/transports',
-    children: [{
-      path: '/transports',
-      name: 'Transportlar',
-      component: () => import('@/views/transports/index'),
-      meta: { title: 'Transportlar' }
-    }]
+    meta: { title: "Transportlar" },
+    children: [
+      {
+        path: '/transports',
+        name: 'Transports',
+        meta: { title: "Transportlar" },
+        component: () => import('@/views/transports/index'),
+      },
+      {
+        path: '/transports/create',
+        name: "New-Transport",
+        hidden: true,
+        meta: { title: "Qo'shish" },
+        component: () => import('@/views/transports/create'),
+
+      },
+      {
+        path: '/transports/update/:id',
+        name: "Update-Transport",
+        hidden: true,
+        component: () => import('@/views/transports/update'),
+
+      }
+    ]
   },
 
   {
     path: '/storages',
+    redirect: "/storages",
     component: Layout,
-    redirect: '/storages',
-    children: [{
-      path: '/storages',
-      name: 'Omborxona',
-      component: () => import('@/views/storages/index'),
-      meta: { title: 'Omborxona' }
-    }]
+    // meta: { title: 'Filiallar' },
+    children: [
+      {
+        path: '/storages',
+        name: 'storage',
+        component: () => import('@/views/storages/index'),
+        meta: { title: 'Filiallar' }
+      },
+      {
+        path: "/storages/create",
+        name: "create-storage",
+        hidden: true,
+        component: () => import('@/views/storages/create'),
+        meta: { title: "Qo'shish" }
+      },
+      {
+        path: "/storages/update/:id",
+        name: "update-storage",
+        hidden: true,
+        component: () => import('@/views/storages/update')
+      }
+    ]
   },
 
   {
     path: '/news',
     component: Layout,
     redirect: '/news',
-    children: [{
-      path: '/news',
-      name: 'Yangiliklar',
-      component: () => import('@/views/news/index'),
-      meta: { title: 'Yangiliklar' }
-    }]
+    children: [
+      {
+        path: '/news',
+        name: 'Yangiliklar',
+        component: () => import('@/views/news/index'),
+        meta: { title: 'Yangiliklar' }
+      },
+      {
+        path: '/news/create',
+        name: "create-news",
+        hidden: true,
+        component: () => import('@/views/news/create'),
+        meta: { title: "Qo'shish" }
+      },
+      {
+        path: '/news/update/:id',
+        name: "update-news",
+        hidden: true,
+        component: () => import('@/views/news/update'),
+        meta: { title: "Yangilash" }
+      }
+    ]
   },
 
   {
