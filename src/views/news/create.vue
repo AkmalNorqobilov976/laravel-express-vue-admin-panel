@@ -17,6 +17,9 @@
           v-model="newsForm.description"
         />
       </el-form-item>
+      <el-form-item label="Rasm">
+        <image-button @returnImage="getImage" />
+      </el-form-item>
       <el-button type="success" @click="createNews()">Qo'shish</el-button>
       <el-button type="danger" @click="$router.go(-1)">Orqaga</el-button>
     </el-form>
@@ -26,12 +29,15 @@
 <script>
 import { getErrorMessage } from "@/utils/error-message";
 import { validMixinNews } from "./mixin/validMixin";
+import ImageButton from "@/components/Form/imageButton.vue";
 
 export default {
+  components: { ImageButton },
   data: () => ({
     newsForm: {
       title: "",
       description: "",
+      image: "",
     },
   }),
   mixins: [validMixinNews],
@@ -58,6 +64,9 @@ export default {
             });
         }
       });
+    },
+    getImage(e) {
+      this.newsForm.image = e;
     },
   },
 };

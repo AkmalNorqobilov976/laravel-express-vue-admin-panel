@@ -11,14 +11,15 @@ export function login(data) {
 
 export function getUsers(){
   return request({
-    url: '/api/user',
+    url: '/api/profile',
     method: "get"
   })
 }
 
 export function getInfo(token) {
+  console.log(token);
   return request({
-    url: 'api/user/getMe',
+    url: 'api/profile',
     method: 'get',
     headers: {
       'Authorization': `Bearer ${token}`
@@ -28,7 +29,7 @@ export function getInfo(token) {
 
 export function logout(token) {
   return request({
-    url: 'api/user/logout',
+    url: 'api/profile/logout',
     method: 'post',
     headers: {
       'Authorization': `Bearer ${token}`

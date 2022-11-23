@@ -1,4 +1,5 @@
 import { getNew, getNewsByPagination, createNew, updateNew, deleteNew } from "@/api/news";
+import { former } from "@/utils/former";
 
 const state = {
     news: [],
@@ -46,8 +47,9 @@ const actions = {
     },
 
     createNew({ commit }, anews) {
+        const datass = former(anews);
         return new Promise((resolve, reject) => {
-            createNew(anews).then(response => {
+            createNew(datass).then(response => {
                 const { data } = response;
                 commit('SET_NEW', data.data);
                 resolve(data);
@@ -58,9 +60,9 @@ const actions = {
     },
 
     updateNew({ commit }, anews) {
-        delete anews.creator;
+        const preparedData = former(anews);
         return new Promise((resolve, reject) => {
-            updateNew(anews, anews.id).then(response => {
+            updateNew(preparedData, anews.id).then(response => {
                 const { data } = response;
                 commit('SET_NEW', data.data);
                 resolve(data);

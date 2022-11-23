@@ -1,7 +1,15 @@
 <template>
   <el-main>
-    <el-button type="success" @click="$router.push('/news/create')">Qo'shish</el-button>
+    <el-button type="success" @click="$router.push('/news/create')"
+      >Qo'shish</el-button
+    >
     <data-table ref="newsDataTable" :columns="newsColumns" :getData="getData">
+      <div slot="image" slot-scope="{ row }" class="table-image">
+        <div v-if="row.image">
+          <img height="60" :src="row.image.original_url" />
+        </div>
+        {{ row.image }}
+      </div>
       <div slot="actions" slot-scope="{ row }">
         <el-button
           type="danger"
@@ -25,7 +33,7 @@
 import { getNewsByPagination } from "@/api/news";
 
 import DataTable from "@/components/DataTable.vue";
-import { getErrorMessage } from '@/utils/error-message';
+import { getErrorMessage } from "@/utils/error-message";
 export default {
   components: { DataTable },
   data: () => ({
@@ -33,6 +41,10 @@ export default {
       {
         prop: "id",
         label: "ID",
+      },
+      {
+        prop: "image",
+        label: "Rasm",
       },
       {
         prop: "title",
@@ -60,24 +72,27 @@ export default {
     },
 
     deleteNews(newsId) {
-      this.$confirm("Haqiqatdan ham ushbu yangilikni o'chirmoqchisizmi?")
-      .then(()=>{
-        this.$store.dispatch('news/deleteNew', newsId)
-        .then(()=>{
-            this.$message({
+      this.$confirm("Haqiqatdan ham ushbu yangilikni o'chirmoqchisizmi?").then(
+        () => {
+          this.$store
+            .dispatch("news/deleteNew", newsId)
+            .then(() => {
+              this.$message({
                 showClose: true,
                 message: "Yangilik muvaffaqiyatli o'chirildi!!!",
-                type: "success"
-            });
-            this.$refs.newsDataTable.getTableData();
-        }).catch(error=>{
-            this.$message({
+                type: "success",
+              });
+              this.$refs.newsDataTable.getTableData();
+            })
+            .catch((error) => {
+              this.$message({
                 showClose: true,
                 message: getErrorMessage(error),
-                type: "error"
-            })
-        })
-      });
+                type: "error",
+              });
+            });
+        }
+      );
     },
   },
 };

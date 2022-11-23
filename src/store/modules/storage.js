@@ -1,4 +1,5 @@
 import { getStorage, getStoragesByPagination, createStorage, updateStorage, deleteStorage } from "@/api/storage";
+import { former } from "@/utils/former";
 
 const state = {
     storages: [],
@@ -46,8 +47,10 @@ const actions = {
     },
 
     createStorage({ commit }, storage) {
+        console.log(storage);
+        const formedStorage = former(storage);
         return new Promise((resolve, reject) => {
-            createStorage(storage).then(response => {
+            createStorage(formedStorage).then(response => {
                 const { data } = response;
                 commit('SET_STORAGE', data.data);
                 resolve(data);
@@ -58,9 +61,11 @@ const actions = {
     },
 
     updateStorage({ commit }, storage) {
+        console.log(storage);
+        const formedStorage = former(storage);
         delete storage.creator;
         return new Promise((resolve, reject) => {
-            updateStorage(storage, storage.id).then(response => {
+            updateStorage(formedStorage, storage.id).then(response => {
                 const { data } = response;
                 commit('SET_STORAGE', data.data);
                 resolve(data);

@@ -25,8 +25,8 @@ export function createStorage(data) {
 
 export function updateStorage(storage, id) {
     return request({
-        url: `admin-api/${url}/${id}`,
-        method: 'put',
+        url: `admin-api/${url}/${id}?_method=put`,
+        method: 'post',
         data: storage
     });
 }

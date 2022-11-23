@@ -25,8 +25,8 @@ export function createNew(data) {
 
 export function updateNew(news, id) {
     return request({
-        url: `admin-api/${url}/${id}`,
-        method: 'put',
+        url: `admin-api/${url}/${id}?_method=put`,
+        method: 'post',
         data: news
     });
 }

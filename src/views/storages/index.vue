@@ -3,7 +3,27 @@
     <el-button type="success" @click="$router.push('/storages/create')"
       >Qo'shish</el-button
     >
-    <data-table ref="storageDataTable" :columns="storageColumns" :getData="getData">
+    <data-table
+      ref="storageDataTable"
+      :columns="storageColumns"
+      :getData="getData"
+    >
+      <div slot="region_id" slot-scope="{ row }">
+        {{ row.region.name }}
+      </div>
+      <div slot="logo" slot-scope="{row}">
+        <div v-if="row.logo">
+          <img height="60" :src="row.logo.original_url" alt="">
+        </div>
+      </div>
+      <div slot="district_id" slot-scope="{ row }">
+        <div v-if="row.district">
+          {{ row.district.name }}
+        </div>
+      </div>
+      <div slot="created_at" slot-scope="{ row }">
+        {{ dateFormat(row.created_at) }}
+      </div>
       <div slot="actions" slot-scope="{ row }">
         <el-button
           type="danger"
@@ -27,9 +47,18 @@
 import DataTable from "@/components/DataTable.vue";
 import { getStoragesByPagination } from "@/api/storage";
 import { getErrorMessage } from "@/utils/error-message";
+import moment from "moment";
 export default {
   data: () => ({
     storageColumns: [
+      {
+        prop: "id",
+        label: "#ID",
+      },
+      {
+        prop: "logo",
+        label: "Logotip"
+      },
       {
         prop: "name",
         label: "Nomi",
@@ -42,7 +71,10 @@ export default {
         prop: "district_id",
         label: "Tuman",
       },
-
+      {
+        prop: "created_at",
+        label: "Qo'shilgan vaqti",
+      },
       {
         prop: "actions",
         label: "Actions",
@@ -56,6 +88,7 @@ export default {
       return getStoragesByPagination(page)
         .then((response) => {
           let { data } = response;
+          console.log(data);
           return {
             data: data.data,
             total: data.meta.total,
@@ -81,7 +114,6 @@ export default {
                 message: "Muvaffaqiyatli o'chirildi!!!",
                 type: "success",
               });
-
             })
             .catch((error) => {
               this.$message({
@@ -92,6 +124,10 @@ export default {
             });
         }
       );
+    },
+
+    dateFormat(date) {
+      return moment(date).format('MMMM Do YYYY, h:mm:ss a');
     },
   },
 };
