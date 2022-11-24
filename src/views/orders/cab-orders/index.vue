@@ -2,7 +2,7 @@
   <el-main>
     <el-button
       type="success"
-      @click="$router.push('/packages/cab-orders/create')"
+      @click="$router.push('/cab-orders/create')"
       >Qo'shish</el-button
     >
     <data-table
@@ -38,7 +38,7 @@
           icon="el-icon-edit"
           round
           size="small"
-          @click="$router.push(`/packages/cab-orders/update/${row.id}`)"
+          @click="$router.push(`/cab-orders/update/${row.id}`)"
         ></el-button>
       </div>
     </data-table>
@@ -56,20 +56,49 @@ export default {
         label: "#ID",
       },
       {
+        prop: "creator_id",
+        label: "Mijoz",
+        sortable: true,
+      },
+      {
+        prop: 'cost',
+        label: "Narxi",
+        sortable: true
+      },
+      {
+        prop: 'note',
+        label: "Izoh",
+        sortable: true
+      },
+      {
+        prop: "status",
+        label: "Status",
+        sortable: true
+      },
+      {
+        prop: 'created_at',
+        label: "Qo'shilgan sana",
+        sortable: true
+      },
+      {
         prop: "from_region",
         label: "Qaysi viloyatdan",
+        sortable: true
       },
       {
         prop: "from_district",
         label: "Qaysi tumandan",
+        sortable: true
       },
       {
         prop: "to_region",
         label: "Qaysi viloyatga",
+        sortable: true
       },
       {
         prop: "to_district",
         label: "Qaysi tumanga",
+        sortable: true
       },
       {
         prop: "actions",

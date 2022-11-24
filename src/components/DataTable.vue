@@ -1,14 +1,34 @@
 <template>
   <div>
+    <el-row>
+      <el-col :span="4">
+        <slot name="button" />
+      </el-col>
+      <el-col :span="6" :offset="14">
+        <form @submit.prevent="onSearch">
+          <el-input
+            placeholder="Qidiruv"
+            type="search"
+            v-model="search"
+            suffix-icon="el-icon-search"
+          />
+        </form>
+      </el-col>
+    </el-row>
+    <div class="mt-2">
+      <slot name="data-table-filter"> </slot>
+    </div>
     <el-table
       v-loading="loading"
       :data="tableData"
       v-bind="$attrs"
-      style="width: 100%"
+      :row-class-name="rowClassName"
       ref="multipleTable"
+      class="mt-2"
+      border
       @row-click="rowClick"
+      v-on="listeners"
     >
-      <!-- v-on="listeners" -->
       <slot name="columns">
         <el-table-column
           v-if="isCheckbox"
@@ -65,10 +85,11 @@ export default {
   },
   data() {
     return {
+      search: "",
       tableData: [],
       page: 1,
       total: 10,
-      sortParams: [],
+      sortParams: "&sortByDesc=id",
       loading: false,
     };
   },
@@ -80,13 +101,21 @@ export default {
       };
     },
   },
+  watch: {
+    search(newSearch, oldSearch) {
+      if (newSearch == "") {
+        this.getTableData(this.page);
+      }
+    },
+  },
   methods: {
     async getTableData(page) {
       this.loading = true;
       let reqPage = page || this.page;
       try {
         let response = await this.getData({
-          page: 1,
+          page: reqPage,
+          query: this.search,
           sortParams: this.sortParams,
         });
         this.tableData = response.data;
@@ -98,11 +127,27 @@ export default {
     onSortChange({ column, prop, order }) {
       if (prop !== null) {
         let shortOrder = order === "ascending" ? "asc" : "desc";
-        this.sortParams = [`${prop}|${shortOrder}`];
+        // this.sortParams = [`${prop}|${shortOrder}`];
+        if (shortOrder == "desc") {
+          this.sortParams = `&sortByDesc=${prop}`;
+        } else {
+          this.sortParams = `&sortBy=${prop}`;
+        }
       } else {
         this.sortParams = [];
       }
-      this.getTableData();
+      this.getTableData(this.page);
+    },
+    onSearch() {
+      if (this.search) {
+        this.getTableData(this.page);
+      }
+    },
+    rowClassName(row, rowId) {
+      console.log(row, rowId);
+      return {
+        background: "blue",
+      };
     },
   },
   created() {
@@ -112,5 +157,13 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+.custom-table-row {
+  background: red;
+  border: 2px solid blue;
+}
+.el-table .el-table__body-wrapper .el-table__body {
+  border-collapse: separate;
+  background: red;
+}
 </style>

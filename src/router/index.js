@@ -160,10 +160,10 @@ export const constantRoutes = [
     path: '/cab-orders',
     component: Layout,
     name: 'cab-orders',
-    meta: {
-      title: "Yo'lovchilar",
-      // icon: 'nested'
-    },
+    // meta: {
+    //   title: "Yo'lovchilar",
+    //   // icon: 'nested'
+    // },
     children: [
       {
         path: '/cab-orders',
@@ -250,7 +250,7 @@ export const constantRoutes = [
     path: '/storages',
     redirect: "/storages",
     component: Layout,
-    // meta: { title: 'Filiallar' },
+    meta: { title: 'Filiallar' },
     children: [
       {
         path: '/storages',
@@ -269,6 +269,7 @@ export const constantRoutes = [
         path: "/storages/update/:id",
         name: "update-storage",
         hidden: true,
+        meta: {title: "Yangilash"},
         component: () => import('@/views/storages/update')
       }
     ]
@@ -278,12 +279,13 @@ export const constantRoutes = [
     path: '/news',
     component: Layout,
     redirect: '/news',
+    meta: {title: "Yangiliklar"},
     children: [
       {
         path: '/news',
-        name: 'Yangiliklar',
+        name: 'news',
         component: () => import('@/views/news/index'),
-        meta: { title: 'Yangiliklar' }
+        meta: { title: 'Yangiliklar' },
       },
       {
         path: '/news/create',

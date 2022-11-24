@@ -1,9 +1,16 @@
 import request from '@/utils/request';
 
 const url = 'news'
-export function getNewsByPagination(page) {
+export function getNewsByPagination(page, query= "", sortParams = "") {
+    let urlParams = `page=${page}`;
+    if(query){
+        urlParams+= `&query=${query}`;
+    }
+    if(sortParams){
+        urlParams += `${sortParams}`;
+    }
     return request({
-        url: `/admin-api/${url}/?page=${page}`,
+        url: `/admin-api/${url}/?${urlParams}`,
         method: 'get',
     });
 }
@@ -38,3 +45,9 @@ export function deleteNew(id) {
     });
 }
 
+export function activateNews(id){
+    return request({
+        url: `admin-api/${url}/${id}/activate`,
+        method: 'patch'
+    })
+}

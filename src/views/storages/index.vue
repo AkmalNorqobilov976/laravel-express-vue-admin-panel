@@ -1,20 +1,48 @@
 <template>
   <el-main>
-    <el-button type="success" @click="$router.push('/storages/create')"
-      >Qo'shish</el-button
-    >
     <data-table
       ref="storageDataTable"
       :columns="storageColumns"
       :getData="getData"
     >
+      <template #button>
+        <el-button type="success" @click="$router.push('/storages/create')"
+          >Qo'shish</el-button
+        >
+      </template>
+      <template #data-table-filter>
+        <el-row>
+          <el-col :span="2">
+            <el-button type="warning" @click="clearFilterAttributes" size="mini"
+              >filterni tozalash</el-button
+            >
+          </el-col>
+          <el-col :span="6" class="custom-col">
+            <el-select
+              v-model="filterAttributes.region_id"
+              size="mini"
+              class="w-full"
+              filterable
+              allow-create
+              default-first-option
+              placeholder="Viloyatlar"
+            >
+              <el-option
+                v-for="(item, i) in filterData.regions"
+                :key="i"
+                :label="item.name"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+      </template>
+      <div slot="logo" slot-scope="{ row }">
+        <img :src="row.logo" height="60" alt="" />
+      </div>
       <div slot="region_id" slot-scope="{ row }">
         {{ row.region.name }}
-      </div>
-      <div slot="logo" slot-scope="{row}">
-        <div v-if="row.logo">
-          <img height="60" :src="row.logo.original_url" alt="">
-        </div>
       </div>
       <div slot="district_id" slot-scope="{ row }">
         <div v-if="row.district">
@@ -47,6 +75,7 @@
 import DataTable from "@/components/DataTable.vue";
 import { getStoragesByPagination } from "@/api/storage";
 import { getErrorMessage } from "@/utils/error-message";
+import { clearFilterAttributes } from "@/utils/former";
 import moment from "moment";
 export default {
   data: () => ({
@@ -54,11 +83,12 @@ export default {
       {
         prop: "id",
         label: "#ID",
+        sortable: true,
       },
       {
         prop: "logo",
         sortable: true,
-        label: "Logotip"
+        label: "Logotip",
       },
       {
         prop: "name",
@@ -85,15 +115,29 @@ export default {
         label: "Actions",
       },
     ],
+    filterData: {
+      regions: [],
+    },
+    filterAttributes: {
+      region_id: "",
+    },
   }),
   components: { DataTable },
-
+  watch: {
+    "filterAttributes.region_id"(newRegion) {
+      this.$refs.storageDataTable.getTableData();
+    },
+  },
   methods: {
     getData({ page, query, sortParams }) {
-      return getStoragesByPagination(page)
+      return getStoragesByPagination(
+        page,
+        query,
+        sortParams,
+        this.filterAttributes
+      )
         .then((response) => {
           let { data } = response;
-          console.log(data);
           return {
             data: data.data,
             total: data.meta.total,
@@ -131,9 +175,21 @@ export default {
       );
     },
 
-    dateFormat(date) {
-      return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    getRegions() {
+      this.$store.dispatch("region/getLocations").then((response) => {
+        this.filterData.regions = [...response.data];
+      });
     },
+
+    dateFormat(date) {
+      return moment(date).format("MMMM Do YYYY, h:mm:ss a");
+    },
+    clearFilterAttributes() {
+      this.filterAttributes = clearFilterAttributes(this.filterAttributes);
+    },
+  },
+  beforeMount() {
+    this.getRegions();
   },
 };
 </script>

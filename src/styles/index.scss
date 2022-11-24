@@ -70,15 +70,23 @@ div:focus {
   padding: 0 10px;
 }
 
-.w-full{
+.w-full {
   width: 100%;
 }
 
-.mt-2{
+.mt-2 {
   margin-top: 8px;
 }
 
-.table-image{
+.table-image {
   height: 60px;
   object-fit: cover;
+}
+
+
+.table-more-text {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }

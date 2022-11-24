@@ -17,8 +17,8 @@
           v-model="newsForm.description"
         />
       </el-form-item>
-      <el-form-item label="Rasm">
-        <image-button @returnImage="getImage" />
+      <el-form-item>
+        <image-button ref="selectImageNewsRef" :imageUrls="[newsForm.image]" @returnImage="getImage" />
       </el-form-item>
       <el-button type="success" @click="updateNews()">Yangilash</el-button>
       <el-button type="danger" @click="$router.go(-1)">Orqaga</el-button>
@@ -29,13 +29,14 @@
 <script>
 import { getErrorMessage } from "@/utils/error-message";
 import { validMixinNews } from "./mixin/validMixin";
-import imageButton from '@/components/Form/imageButton.vue';
+import imageButton from "@/components/Form/imageButton.vue";
 export default {
   components: { imageButton },
   data: () => ({
     newsForm: {
       title: "",
       description: "",
+      image: null,
     },
   }),
   mixins: [validMixinNews],
@@ -43,6 +44,9 @@ export default {
     updateNews() {
       this.$refs.newsForm.validate((valid) => {
         if (valid) {
+          if (this.$refs.selectImageNewsRef.checkIsImageSelected) {
+            delete this.newsForm.image;
+          }
           this.$store
             .dispatch("news/updateNew", this.newsForm)
             .then(() => {

@@ -111,7 +111,8 @@
             <el-col :span="24">
               <image-button
                 @returnImage="getImage"
-                :label="storageForm.logo ? 'Rasm tanlandi' : 'Rasmni tanlang'"
+                :imageUrls="[storageForm.logo]"
+                ref="storageImageButton"
               />
             </el-col>
           </el-row>
@@ -142,6 +143,8 @@ export default {
       is_can_accept_parcels: false,
       service_fee_percent: undefined,
       // balance: undefined,
+
+      logo: null,
     },
   }),
   mixins: [storageValidMixin],
@@ -185,6 +188,9 @@ export default {
     updateStorage() {
       this.$refs.storageForm.validate((valid) => {
         if (valid) {
+          if (!this.$refs.storageImageButton.isImageSelected) {
+            delete this.storageForm.logo;
+          }
           this.$store
             .dispatch("storage/updateStorage", this.storageForm)
             .then((response) => {
@@ -207,7 +213,6 @@ export default {
     },
     getImage(e) {
       this.storageForm.logo = e;
-      console.log(this.storageForm.logo, "logo");
     },
   },
   beforeMount() {

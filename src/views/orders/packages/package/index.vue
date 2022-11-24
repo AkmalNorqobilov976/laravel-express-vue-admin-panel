@@ -75,19 +75,19 @@ export default {
         sortable: true,
       },
       {
-        prop: "delivery_fee_amount",
-        label: "Narxi",
+        prop: 'driver_id',
+        label: "Kuryer",
         sortable: true,
       },
       {
-        prop: "note",
-        label: "Izoh",
-        sortable: true,
+        prop: "matter",
+        label: "Buyurtma",
+        sortable: true
       },
       {
-        prop: "status",
-        label: "Status",
-        sortable: true,
+        prop: "is_paid",
+        label: "Oldindan to'lov",
+        sortable: true
       },
       {
         prop: "actions",

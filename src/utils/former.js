@@ -17,7 +17,7 @@ export const formerMultipleFile = (object) => {
     return formData;
 }
 
-export const formerSingleFile =  (object) => {
+export const formerSingleFile = (object) => {
     const formData = new FormData();
     for (const key in object) {
         if (typeof object[key] === "boolean") {
@@ -28,4 +28,21 @@ export const formerSingleFile =  (object) => {
         formData.append(`${key}`, object[key]);
     }
     return formData;
+}
+
+export const queryMaker = (object) => {
+    let str = "";
+    for (const key in object) {
+        if (object[key]) {
+            str += `&${key}=${object[key]}`;
+        }
+    }
+    return str;
+}
+
+export const clearFilterAttributes = (object) => {
+    for (const key in object) {
+        object[key] = ""
+    }
+    return object;
 }

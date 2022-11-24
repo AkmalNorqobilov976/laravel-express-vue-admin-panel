@@ -1,4 +1,4 @@
-import { validFunction, validTypes } from "@/utils/validate"
+import { validFile, validFunction, validTypes } from "@/utils/validate"
 
 export const storageValidMixin = {
     data() {
@@ -53,6 +53,13 @@ export const storageValidMixin = {
                         validator: validFunction('Xizmat haqqi', validTypes.number)
                     }
                 ],
+                logo: [
+                    {
+                        required: true,
+                        trigger: 'blur',
+                        validator: validFile('rasm')
+                    }
+                ]
             }
         }
     }

@@ -109,10 +109,12 @@
               </el-form-item>
             </el-col>
             <el-col :span="24">
-              <image-button
-                @returnImage="getImage"
-                :label="storageForm.logo ? 'Rasm tanlandi' : 'Rasmni tanlang'"
-              />
+              <el-form-item prop="logo">
+                <image-button
+                  @returnImage="getImage"
+                  :label="storageForm.logo ? 'Rasm tanlandi' : 'Rasmni tanlang'"
+                />
+              </el-form-item>
             </el-col>
           </el-row>
         </el-tab-pane>

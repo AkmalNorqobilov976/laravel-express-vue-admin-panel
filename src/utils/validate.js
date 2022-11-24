@@ -47,3 +47,13 @@ export const validFunction = (name, type) => {
     }
   }
 }
+
+export const validFile = (name) => {
+  return (rule, value, callback) => {
+    if (!value) {
+      callback(new Error(`${name} bo\'sh bo\'lmasligi kerak!!!`))
+    } else {
+      callback()
+    }
+  }
+}
