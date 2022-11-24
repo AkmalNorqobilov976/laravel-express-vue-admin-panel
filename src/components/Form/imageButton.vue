@@ -1,19 +1,30 @@
 <template>
   <div>
     <div class="file-input">
-      <input type="file" ref="imageInput" @change="onChange($event)" />
+      <input
+        v-if="multi"
+        type="file"
+        ref="imageInput"
+        multiple
+        @change="onChangeImages($event)"
+      />
+      <input v-else type="file" ref="imageInput" @change="onChange($event)" />
     </div>
-    <el-button @click="openFile">{{label}}</el-button>
+    <el-button @click="openFile">{{ label }}</el-button>
   </div>
 </template>
 
 <script>
 export default {
   props: {
+    multi: {
+      type: Boolean,
+      default: false,
+    },
     label: {
       type: String,
-      default: "Rasmni tanlang"
-    }
+      default: "Rasmni tanlang",
+    },
   },
   methods: {
     openFile() {
@@ -22,6 +33,9 @@ export default {
     },
     onChange(e) {
       this.$emit("returnImage", e.target.files[0]);
+    },
+    onChangeImages(e) {
+      this.$emit("returnImage", e.target.files);
     },
   },
 };

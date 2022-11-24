@@ -57,22 +57,27 @@ export default {
       },
       {
         prop: "logo",
+        sortable: true,
         label: "Logotip"
       },
       {
         prop: "name",
+        sortable: true,
         label: "Nomi",
       },
       {
         prop: "region_id",
+        sortable: true,
         label: "Viloyat",
       },
       {
         prop: "district_id",
+        sortable: true,
         label: "Tuman",
       },
       {
         prop: "created_at",
+        sortable: true,
         label: "Qo'shilgan vaqti",
       },
       {

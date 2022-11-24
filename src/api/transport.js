@@ -25,8 +25,8 @@ export function createTransport(data) {
 
 export function updateTransport(transport, id) {
     return request({
-        url: `admin-api/${url}/${id}`,
-        method: 'put',
+        url: `admin-api/${url}/${id}?_method=put`,
+        method: 'post',
         data: transport
     });
 }

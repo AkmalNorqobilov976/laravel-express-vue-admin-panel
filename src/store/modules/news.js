@@ -1,5 +1,5 @@
 import { getNew, getNewsByPagination, createNew, updateNew, deleteNew } from "@/api/news";
-import { former } from "@/utils/former";
+import { formerSingleFile } from "@/utils/former";
 
 const state = {
     news: [],
@@ -47,7 +47,7 @@ const actions = {
     },
 
     createNew({ commit }, anews) {
-        const datass = former(anews);
+        const datass = formerSingleFile(anews);
         return new Promise((resolve, reject) => {
             createNew(datass).then(response => {
                 const { data } = response;
@@ -60,7 +60,7 @@ const actions = {
     },
 
     updateNew({ commit }, anews) {
-        const preparedData = former(anews);
+        const preparedData = formerSingleFile(anews);
         return new Promise((resolve, reject) => {
             updateNew(preparedData, anews.id).then(response => {
                 const { data } = response;

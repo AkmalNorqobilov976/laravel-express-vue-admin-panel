@@ -4,6 +4,9 @@
       >Qo'shish</el-button
     >
     <data-table ref="cargoDataTable" :columns="cargoColumns" :getData="getData">
+      <div slot="created_at" slot-scope="{row}">
+        {{formatDate(row.created_at)}}
+      </div>
       <div slot="actions" slot-scope="{ row }">
         <el-button
           type="danger"
@@ -27,16 +30,54 @@
 import DataTable from "@/components/DataTable.vue";
 import { getCargosByPagination } from "@/api/cargo";
 import { getErrorMessage } from "@/utils/error-message";
+import moment from 'moment';
 export default {
   data: () => ({
     cargoColumns: [
       {
+        prop: "creator_id",
+        label: "Mijoz",
+        sortable: true
+      },
+      {
         prop: "from_region_id",
-        label: "Qaysi viloyatdan",
+        label: "Qayerdan",
+        sortable: true
       },
       {
         prop: "to_region_id",
-        label: "Qaysi viloyatga",
+        label: "Qayerga",
+        sortable: true
+      },
+      {
+        prop: "cost",
+        label: "Narxi",
+        sortable: true
+      },
+      {
+        prop: "note",
+        label: "Izoh",
+        sortable: true
+      },
+      {
+        prop: "weight",
+        label: "Yuk og'irligi",
+        sortable: true
+      },
+      {
+        prop: "matter",
+        label: "Yuk",
+        sortable: true
+      },
+      {
+        prop: 'status',
+        label: "Status",
+        sortable: true
+      },
+      {
+        prop: "created_at",
+        label: "Qo'shilgan sana",
+        sortable: true
       },
       {
         prop: "actions",
@@ -76,6 +117,10 @@ export default {
           });
       });
     },
+
+    formatDate(date){
+      return moment(date).format('MMMM Do YYYY, h:mm:ss a');
+    }
   },
 };
 </script>

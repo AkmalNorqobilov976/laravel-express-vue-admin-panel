@@ -1,4 +1,5 @@
 import { createTransport, deleteTransport, getTransport, getTransportsByPagination, updateTransport } from "@/api/transport";
+import { former } from "@/utils/former";
 
 const state = {
     transports: [],
@@ -46,8 +47,9 @@ const actions = {
     },
 
     createTransport({ commit }, transport) {
+        const formedTransport = former(transport);
         return new Promise((resolve, reject) => {
-            createTransport(transport).then(response => {
+            createTransport(formedTransport).then(response => {
                 const { data } = response;
                 commit('SET_TRANSPORT', data.data);
                 resolve(data);
@@ -59,8 +61,13 @@ const actions = {
 
     updateTransport({ commit }, transport) {
         delete transport.creator;
+        // if (transport.transport_images.length==) {
+        //     delete transport.transport_images;
+        // }
+        const formedTransport = former(transport);
+
         return new Promise((resolve, reject) => {
-            updateTransport(transport, transport.id).then(response => {
+            updateTransport(formedTransport, transport.id).then(response => {
                 const { data } = response;
                 commit('SET_TRANSPORT', data.data);
                 resolve(data);

@@ -113,76 +113,72 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: "/packages",
+    component: Layout,
+    name: 'packages',
+    meta: { title: 'Pochta' },
+    children: [
+      {
+        path: '/packages',
+        name: "package-index",
+        hidden: true,
+        component: () => import('@/views/orders/packages/package/index'),
+
+      },
+      {
+        path: "create",
+        name: "create-package",
+        hidden: true,
+        component: () => import('@/views/orders/packages/package/create'),
+        meta: { title: "Qo'shish" }
+      },
+      {
+        path: "/orders/package/package/update/:id",
+        name: "update-package",
+        hidden: true,
+        component: () => import('@/views/orders/packages/package/update'),
+        meta: { title: "Qo'shish" }
+      }
+    ]
+  },
+  {
+    path: '/package-list',
+    component: Layout,
+    name: 'Package-list',
+    // meta: { title: 'Pochtalar ro\'yxati' },
+    children: [
+      {
+        path: '/package-list',
+        component: () => import('@/views/orders/packages/package-list/index'),
+        meta: {title: "Pochtalar ro'yxati"}
+      }
+    ]
+  },
 
   {
-    path: '/orders',
+    path: '/cab-orders',
     component: Layout,
-    redirect: '/orders/packages',
-    name: 'Orders',
+    name: 'cab-orders',
     meta: {
-      title: 'Buyurtmalar',
+      title: "Yo'lovchilar",
       // icon: 'nested'
     },
     children: [
       {
-        path: 'packages',
-        component: () => import('@/views/orders/packages/index'), // Parent router-view
-        name: 'packages',
-        meta: { title: 'Pochtalar' },
-        children: [
-          {
-            path: "package",
-            component: ()=>import('@/views/orders/packages/index'),
-            name: 'package',
-            meta: { title: 'Pochta' },
-            children: [
-              {
-                path: '',
-                name: "package-index",
-                hidden: true,
-                component: () => import('@/views/orders/packages/package/index'),
-
-              },
-              {
-                path: "create",
-                name: "create-package",
-                hidden: true,
-                component: ()=> import('@/views/orders/packages/package/create'),
-                meta: {title: "Qo'shish"}
-              },
-              {
-                path: "/orders/package/package/update/:id",
-                name: "update-package",
-                hidden: true,
-                component: ()=> import('@/views/orders/packages/package/update'),
-                meta: {title: "Qo'shish"}
-              }
-            ]
-          },
-          {
-            path: '/package-list',
-            component: () => import('@/views/orders/packages/package-list/index'),
-            name: 'Package-list',
-            meta: { title: 'Pochtalar ro\'yxati' },
-          },
-
-        ]
-      },
-      {
         path: '/cab-orders',
-        name: 'car-orders',
         component: () => import('@/views/orders/cab-orders/index'),
         meta: { title: "Yo'lovchilar" },
       },
       {
-        path: '/packages/cab-orders/create',
+        path: '/cab-orders/create',
         name: "create-cab-order",
         hidden: true,
         meta: { title: "Qo'shish" },
         component: () => import('@/views/orders/cab-orders/create')
       },
       {
-        path: '/packages/cab-orders/update/:id',
+        path: '/cab-orders/update/:id',
         name: "update-cab-order",
         hidden: true,
         meta: { title: "Yangilash" },
@@ -224,7 +220,7 @@ export const constantRoutes = [
     path: '/transports',
     component: Layout,
     redirect: '/transports',
-    meta: { title: "Transportlar" },
+    // meta: { title: "Transportlar" },
     children: [
       {
         path: '/transports',

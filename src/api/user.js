@@ -17,7 +17,6 @@ export function getUsers(){
 }
 
 export function getInfo(token) {
-  console.log(token);
   return request({
     url: 'api/profile',
     method: 'get',
