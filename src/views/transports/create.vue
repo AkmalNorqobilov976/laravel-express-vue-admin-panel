@@ -11,21 +11,7 @@
       <el-tabs type="border-card">
         <el-tab-pane label="Asosiy ma'lumotlar">
           <el-row>
-            <el-col :span="12" class="custom-col">
-              <el-form-item label="Holati">
-                <el-select
-                  class="w-full"
-                  v-model="transportForm.status"
-                  filterable
-                  fit-input-width
-                  placeholder="Holati"
-                  auto-complete="on"
-                >
-                  <el-option label="Aktiv" value="Aktiv"> </el-option>
-                  <el-option label="Bajarilgan" value="Bajarilgan"> </el-option>
-                </el-select>
-              </el-form-item>
-            </el-col>
+            
             <el-col :span="12" class="custom-col">
               <el-form-item label="Transport turi">
                 <el-select
@@ -33,11 +19,11 @@
                   filterable
                   placeholder="Transport turi"
                   fit-input-width
-                  v-model="transportForm.transport_type"
+                  v-model="transportForm.type"
                 >
-                  <el-option label="Taxida" value="by_car"></el-option>
-                  <el-option label="Piyoda" value="on_foot"></el-option>
-                  <el-option label="Yuk mashinada" value="by_truck"></el-option>
+                  <el-option label="Taxida" value="car"></el-option>
+                  <el-option label="Piyoda" value="special_car"></el-option>
+                  <el-option label="Yuk mashinada" value="truck"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
@@ -79,21 +65,15 @@
 
             <el-col :span="12" class="custom-col">
               <el-form-item label="Suratlar">
-                <image-button
-                  :multi="true"
-                  :label="
-                    transportForm.transport_images.length
-                      ? 'Rasm tanlang'
-                      : 'Rasm tanlandi'
-                  "
-                  @returnImage="getImages"
-                ></image-button>
+                <images-button
+                  @returnImages="getImages"
+                ></images-button>
               </el-form-item>
             </el-col>
           </el-row>
         </el-tab-pane>
         <el-tab-pane label="Manzil ma'lumotlar">
-          <el-col :span="8" class="custom-col">
+          <el-col :span="12" class="custom-col">
             <el-form-item label="Qaysi viloyatdan" prop="from_region_id">
               <el-select
                 v-model="transportForm.from_region_id"
@@ -113,7 +93,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8" class="custom-col">
+          <el-col :span="12" class="custom-col">
             <el-form-item label="Qaysi tumandan" prop="from_district_id">
               <el-select
                 v-model="transportForm.from_district_id"
@@ -134,20 +114,8 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="8">
-            <el-form-item
-              label="Qaysi manzildan"
-              class="custom-col"
-              prop="from_address"
-            >
-              <el-input
-                placeholder="Qaysi manzildan"
-                v-model="transportForm.from_address"
-              />
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="8" class="custom-col">
+       
+          <el-col :span="12" class="custom-col">
             <el-form-item label="Qaysi viloyatga" prop="to_region_id">
               <el-select
                 v-model="transportForm.to_region_id"
@@ -167,7 +135,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8" class="custom-col">
+          <el-col :span="12" class="custom-col">
             <el-form-item label="Qaysi tumanga" prop="to_district_id">
               <el-select
                 v-model="transportForm.to_district_id"
@@ -188,18 +156,6 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="8">
-            <el-form-item
-              label="Qaysi manzilga"
-              class="custom-col"
-              prop="to_address"
-            >
-              <el-input
-                placeholder="Qaysi manzilga"
-                v-model="transportForm.to_address"
-              />
-            </el-form-item>
-          </el-col>
         </el-tab-pane>
         <el-tab-pane label="Mijoz ma'lumotlar">
           <el-col :span="8">
@@ -237,9 +193,9 @@
 import { getErrorMessage } from "@/utils/error-message";
 import { validMixinTransport } from "./mixins/validMixin";
 import SelectUser from "@/components/transports/SelectUser.vue";
-import ImageButton from "@/components/Form/imageButton.vue";
+import ImagesButton from '@/components/Form/imagesButton.vue';
 export default {
-  components: { SelectUser, ImageButton },
+  components: { SelectUser, ImagesButton },
   data: () => ({
     user: {
       id: undefined,
@@ -254,13 +210,13 @@ export default {
       from_address: "",
       to_region_id: undefined,
       to_district_id: undefined,
+      type: "",
       to_address: "",
       note: "",
       cost: undefined,
       cost_type: "",
       creator_id: "1",
-      status: "",
-      transport_images: [],
+      images: [],
     },
   }),
   mixins: [validMixinTransport],
@@ -314,8 +270,7 @@ export default {
       });
     },
     getImages(e){
-      console.log(e);
-      this.transportForm.transport_images = e;
+      this.transportForm.images = e;
     } 
   },
   beforeMount() {

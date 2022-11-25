@@ -11,7 +11,7 @@ export function getStoragesByPagination(page, query = "", sortParams = "", filte
         urlParams += `${sortParams}`;
     }
     urlParams += queryMaker(filterAttributes);
-    console.log(urlParams);
+    
     return request({
         url: `/admin-api/${url}/?${urlParams}`,
         method: 'get',

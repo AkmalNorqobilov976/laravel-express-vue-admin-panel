@@ -11,7 +11,7 @@ export function login(data) {
 
 export function getUsers(){
   return request({
-    url: '/api/profile',
+    url: '/admin-api/users',
     method: "get"
   })
 }

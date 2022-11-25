@@ -1,14 +1,7 @@
 <template>
   <div>
     <div class="file-input">
-      <input
-        v-if="multi"
-        type="file"
-        ref="imageInput"
-        multiple
-        @change="onChangeImages($event)"
-      />
-      <input v-else type="file" ref="imageInput" @change="onChange($event)" />
+      <input  type="file" multiple ref="imageInput" @change="onChange($event)" />
     </div>
     <div class="image-viewer mt-2" ref="imageButtonImageViewer">
       <span v-for="(image, i) in imageList" class="custom-col" :key="i">
@@ -63,12 +56,8 @@ export default {
     onChange(e) {
       this.checkIsImageSelected(e);
       this.fileReader(e.target.files);
-      this.$emit("returnImage", e.target.files[0]);
-    },
-    onChangeImages(e) {
-      this.checkIsImageSelected(e);
-      this.this.$emit("returnImages", e.target.files);
-    },
+      this.$emit("returnImages", [...e.target.files]);
+    }
   },
 };
 </script>

@@ -191,6 +191,7 @@ export const constantRoutes = [
   {
     path: '/cargos',
     component: Layout,
+    meta: {title: "Yuklar"},
     // redirect: '/cargos',
     children: [
       {
@@ -220,7 +221,7 @@ export const constantRoutes = [
     path: '/transports',
     component: Layout,
     redirect: '/transports',
-    // meta: { title: "Transportlar" },
+    meta: { title: "Transportlar" },
     children: [
       {
         path: '/transports',

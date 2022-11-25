@@ -2,11 +2,13 @@ export const validMixinTransport = {
     data() {
         const validTypes = {
             string: 'string',
-            number: 'number'
+            number: 'number',
+            boolean: 'boolean'
         }
         const types = {
             string: "harflardan",
-            number: "sonlardan"
+            number: "sonlardan",
+            boolean: "ha yoki yo'qdan"
         };
         const validName = (name, type) => {
             return (rule, value, callback) => {
@@ -40,13 +42,13 @@ export const validMixinTransport = {
                         validator: validName('Qaysi tumandan', validTypes.string)
                     }
                 ],
-                from_address: [
-                    {
-                        required: true,
-                        trigger: 'blur',
-                        validator: validName('Qaysi manzildan', validTypes.string)
-                    }
-                ],
+                // from_address: [
+                //     {
+                //         required: true,
+                //         trigger: 'blur',
+                //         validator: validName('Qaysi manzildan', validTypes.string)
+                //     }
+                // ],
                 to_region_id: [
                     {
                         required: true,
@@ -61,13 +63,7 @@ export const validMixinTransport = {
                         validator: validName('Qaysi tumanga', validTypes.string)
                     }
                 ],
-                to_address: [
-                    {
-                        required: true,
-                        trigger: 'blur',
-                        validator: validName('Qaysi manzilga', validTypes.string)
-                    }
-                ],
+               
                 note: [
                     {
                         required: true,

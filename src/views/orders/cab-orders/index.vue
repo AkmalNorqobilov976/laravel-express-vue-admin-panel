@@ -1,19 +1,19 @@
 <template>
   <el-main>
-    <el-button
-      type="success"
-      @click="$router.push('/cab-orders/create')"
-      >Qo'shish</el-button
-    >
     <data-table
       ref="cabOrderDataTable"
       :columns="cabOrdersColumns"
       :getData="getData"
     >
+      <div slot="button">
+        <el-button type="success" @click="$router.push('/cab-orders/create')"
+          >Qo'shish</el-button
+        >
+      </div>
       <div slot="from_region" slot-scope="{ row }">
         {{ row.from_region.name }}
       </div>
-      
+
       <div slot="from_district" slot-scope="{ row }">
         {{ row.from_district.name }}
       </div>
@@ -21,7 +21,7 @@
       <div slot="to_region" slot-scope="{ row }">
         {{ row.to_region.name }}
       </div>
-      
+
       <div slot="to_district" slot-scope="{ row }">
         {{ row.to_district.name }}
       </div>
@@ -61,55 +61,63 @@ export default {
         sortable: true,
       },
       {
-        prop: 'cost',
+        prop: "cost",
         label: "Narxi",
-        sortable: true
+        sortable: true,
       },
       {
-        prop: 'note',
+        prop: "note",
         label: "Izoh",
-        sortable: true
+        sortable: true,
       },
       {
         prop: "status",
         label: "Status",
-        sortable: true
+        sortable: true,
       },
       {
-        prop: 'created_at',
+        prop: "created_at",
         label: "Qo'shilgan sana",
-        sortable: true
+        sortable: true,
       },
       {
         prop: "from_region",
         label: "Qaysi viloyatdan",
-        sortable: true
+        sortable: true,
       },
       {
         prop: "from_district",
         label: "Qaysi tumandan",
-        sortable: true
+        sortable: true,
       },
       {
         prop: "to_region",
         label: "Qaysi viloyatga",
-        sortable: true
+        sortable: true,
       },
       {
         prop: "to_district",
         label: "Qaysi tumanga",
-        sortable: true
+        sortable: true,
       },
       {
         prop: "actions",
         label: "Actions",
       },
     ],
+    filterData: {
+      regions: [],
+    },
+    filterAttributes: {
+      from_region_id: "",
+      to_region_id: "",
+      status: ""
+    }
   }),
   components: { DataTable },
   methods: {
     getData({ page, query, sortParams }) {
-      return getCabOrdersByPagination(page).then((response) => {
+      return getCabOrdersByPagination(page, query, sortParams, this.filterAttributes).then((response) => {
         let { data } = response;
         console.log(data);
         return {

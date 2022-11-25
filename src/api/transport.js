@@ -1,9 +1,19 @@
+import { queryMaker } from '@/utils/former';
 import request from '@/utils/request';
 
 const url = 'transports'
-export function getTransportsByPagination(page) {
+export function getTransportsByPagination(page, query = "", sortParams = "", filterAttributes) {
+    let urlParams = `page=${page}`;
+    if (query) {
+        urlParams += `&query=${query}`;
+    }
+    if (sortParams) {
+        urlParams += `${sortParams}`;
+    }
+    urlParams += queryMaker(filterAttributes);
+    console.log(urlParams, "params");
     return request({
-        url: `/admin-api/${url}/?page=${page}`,
+        url: `/admin-api/${url}/?${urlParams}`,
         method: 'get',
     });
 }

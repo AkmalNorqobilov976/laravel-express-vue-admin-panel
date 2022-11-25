@@ -144,7 +144,6 @@ export default {
       }
     },
     rowClassName(row, rowId) {
-      console.log(row, rowId);
       return {
         background: "blue",
       };
@@ -158,12 +157,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.custom-table-row {
-  background: red;
-  border: 2px solid blue;
-}
-.el-table .el-table__body-wrapper .el-table__body {
-  border-collapse: separate;
-  background: red;
-}
+
+
 </style>
