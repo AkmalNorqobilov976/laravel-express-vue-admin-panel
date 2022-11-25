@@ -46,6 +46,7 @@ const actions = {
     },
 
     createCargo({ commit }, cargo) {
+        console.log(cargo);
         return new Promise((resolve, reject) => {
             createCargo(cargo).then(response => {
                 const { data } = response;

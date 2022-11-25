@@ -133,7 +133,7 @@
               <el-form-item label="Mijoz" class="custom-col" prop="creator_id">
                 <el-input
                   placeholder="Mijoz"
-                  :value="`${cargoForm.user.name} ${cargoForm.user.email}`"
+                  :value="`${cargoForm.creator_name}`"
                   @focus="userDialog = true"
                 >
                   <el-button
@@ -174,6 +174,16 @@
                 ></el-input>
               </el-form-item>
             </el-col>
+
+            <el-col :span="12" class="custom-col">
+              <el-form-item label="Narxi">
+                <el-input
+                  placeholder="Narxi"
+                  v-model="cargoForm.cost"
+                  type="number"
+                ></el-input>
+              </el-form-item>
+            </el-col>
           </el-row>
         </el-tab-pane>
         <el-tab-pane label="Haydovchi">
@@ -182,7 +192,7 @@
               <el-form-item label="Haydovchi" class="custom-col">
                 <el-input
                   placeholder="Haydovchi"
-                  :value="`${cargoForm.driver.name} ${cargoForm.driver.email}`"
+                  :value="`${cargoForm.driver_name}`"
                   @focus="driverDialog = true"
                 >
                   <el-button
@@ -217,6 +227,7 @@ import { cargoValidMixin } from "./mixin/cargoValidMixin";
 export default {
   components: { SelectUser },
   data: () => ({
+    driverDialog: false,
     cargoForm: {
       from_region_id: undefined,
       from_district_id: undefined,

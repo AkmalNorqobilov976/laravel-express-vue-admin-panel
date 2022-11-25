@@ -10,6 +10,76 @@
           >Qo'shish</el-button
         >
       </div>
+      <div slot="data-table-filter">
+        <el-row>
+          <el-col :span="2">
+            <el-button
+              size="mini"
+              type="warning"
+              @click="clearFilterAttributes()"
+              >filterni tozalash</el-button
+            >
+          </el-col>
+          <el-col :span="6" class="custom-col">
+            <el-select
+              v-model="filterAttributes.from_region_id"
+              size="mini"
+              class="w-full"
+              filterable
+              allow-create
+              default-first-option
+              placeholder="Qaysi viloyatdan"
+            >
+              <el-option
+                v-for="(item, i) in filterData.regions"
+                :key="i"
+                :label="item.name"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="6" class="custom-col">
+            <el-select
+              v-model="filterAttributes.to_region_id"
+              size="mini"
+              class="w-full"
+              filterable
+              allow-create
+              default-first-option
+              placeholder="Qaysi viloyatga"
+            >
+              <el-option
+                v-for="(item, i) in filterData.regions"
+                :key="i"
+                :label="item.name"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="6" class="custom-col">
+            <el-select
+              class="w-full"
+              size="mini"
+              v-model="filterAttributes.status"
+              placeholder="Holati"
+            >
+              <el-option label="Aktiv" value="active"> </el-option>
+              <el-option label="Bajarilgan" value="completed"> </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="4" class="custom-col">
+            <el-date-picker
+              v-model="filterAttributes.createdAt"
+              type="date"
+              placeholder="Qo'shilgan sana"
+            >
+            </el-date-picker>
+          </el-col>
+        </el-row>
+      </div>
+
       <div slot="from_region" slot-scope="{ row }">
         {{ row.from_region.name }}
       </div>
@@ -54,6 +124,7 @@ export default {
       {
         prop: "id",
         label: "#ID",
+        sortable: true,
       },
       {
         prop: "creator_id",
@@ -109,16 +180,37 @@ export default {
       regions: [],
     },
     filterAttributes: {
-      from_region_id: "",
-      to_region_id: "",
-      status: ""
-    }
+      fromRegionId: "",
+      toRegionId: "",
+      status: "",
+      createdAt: "",
+    },
   }),
   components: { DataTable },
+  watch: {
+    "filterAttributes.fromRegionId"(newOne) {
+      this.$refs.cargoDataTable.getTableData();
+    },
+    "filterAttributes.toRegionId"(newOne) {
+      this.$refs.cargoDataTable.getTableData();
+    },
+    "filterAttributes.status"(newOne) {
+      this.$refs.cargoDataTable.getTableData();
+    },
+    "filterAttributes.createdAt"(newOne) {
+      this.$refs.cargoDataTable.getTableData();
+    },
+  },
   methods: {
     getData({ page, query, sortParams }) {
-      return getCabOrdersByPagination(page, query, sortParams, this.filterAttributes).then((response) => {
+      return getCabOrdersByPagination(
+        page,
+        query,
+        sortParams,
+        this.filterAttributes
+      ).then((response) => {
         let { data } = response;
+
         console.log(data);
         return {
           data: data.data,

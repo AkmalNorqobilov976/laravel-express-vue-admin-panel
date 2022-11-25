@@ -174,6 +174,15 @@
                 ></el-input>
               </el-form-item>
             </el-col>
+            <el-col :span="12" class="custom-col">
+              <el-form-item label="Narxi">
+                <el-input
+                  placeholder="Narxi"
+                  v-model="cargoForm.cost"
+                  type="number"
+                ></el-input>
+              </el-form-item>
+            </el-col>
           </el-row>
         </el-tab-pane>
         <el-tab-pane label="Haydovchi">
@@ -231,6 +240,8 @@ export default {
       note: "",
       weight: "",
       matter: "",
+      cost: undefined,
+
       driver_id: undefined,
     },
     driverDialog: false,

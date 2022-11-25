@@ -9,7 +9,12 @@
       <div slot="data-table-filter">
         <el-row>
           <el-col :span="2">
-            <el-button size="mini" type="warning">filterni tozalash</el-button>
+            <el-button
+              size="mini"
+              type="warning"
+              @click="clearFilterAttributes()"
+              >filterni tozalash</el-button
+            >
           </el-col>
           <el-col :span="6" class="custom-col">
             <el-select
@@ -50,20 +55,28 @@
             </el-select>
           </el-col>
           <el-col :span="6" class="custom-col">
-              <el-select
-                  class="w-full"
-                  size="mini"
-                  v-model="filterAttributes.status"
-                  placeholder="Holati"
-                >
-                  <el-option label="Aktiv" value="Aktiv"> </el-option>
-                  <el-option label="Bajarilgan" value="Bajarilgan"> </el-option>
-                </el-select>
+            <el-select
+              class="w-full"
+              size="mini"
+              v-model="filterAttributes.status"
+              placeholder="Holati"
+            >
+              <el-option label="Aktiv" value="active"> </el-option>
+              <el-option label="Bajarilgan" value="completed"> </el-option>
+            </el-select>
           </el-col>
-        
+          <el-col :span="4" class="custom-col">
+            <el-date-picker
+              v-model="filterAttributes.createdAt"
+              size="mini"
+              type="date"
+              placeholder="Qo'shilgan sana"
+            >
+            </el-date-picker>
+          </el-col>
         </el-row>
       </div>
-      
+
       <div slot="created_at" slot-scope="{ row }">
         {{ formatDate(row.created_at) }}
       </div>
@@ -90,10 +103,16 @@
 import DataTable from "@/components/DataTable.vue";
 import { getCargosByPagination } from "@/api/cargo";
 import { getErrorMessage } from "@/utils/error-message";
+import { clearFilterAttributes } from "@/utils/former";
 import moment from "moment";
 export default {
   data: () => ({
     cargoColumns: [
+      {
+        prop: "id",
+        label: "#ID",
+        sortable: true,
+      },
       {
         prop: "creator_id",
         label: "Mijoz",
@@ -149,14 +168,30 @@ export default {
       users: [],
     },
     filterAttributes: {
-      from_region_id: "",
-      to_region_id: "",
-      driver_id: "",
-      creator_id: "",
+      fromRegionId: "",
+      toRegionId: "",
+      driverId: "",
+      creatorId: "",
       status: "",
-      created_at: "",
+      createdAt: "",
     },
   }),
+  watch: {
+    "filterAttributes.fromRegionId"(newOne) {
+      this.$refs.cargoDataTable.getTableData();
+    },
+    "filterAttributes.toRegionId"(newOne) {
+      this.$refs.cargoDataTable.getTableData();
+    },
+    "filterAttributes.status"(newOne) {
+      console.log(newOne);
+      this.$refs.cargoDataTable.getTableData();
+    },
+    "filterAttributes.createdAt"(newOne) {
+      console.log(this.dateFormatYyyyMmDd(newOne.createdAt));
+      this.$refs.cargoDataTable.getTableData();
+    },
+  },
   components: { DataTable },
   methods: {
     getData({ page, query, sortParams }) {
@@ -198,10 +233,16 @@ export default {
     formatDate(date) {
       return moment(date).format("MMMM Do YYYY, h:mm:ss a");
     },
+    dateFormatYyyyMmDd(date){
+      return moment(date).format('MMMM Do YYYY')
+    },
     getRegions() {
       this.$store.dispatch("region/getLocations").then((response) => {
         this.filterData.regions = [...response.data];
       });
+    },
+    clearFilterAttributes() {
+      this.filterAttributes = clearFilterAttributes(this.filterAttributes);
     },
   },
   beforeMount() {

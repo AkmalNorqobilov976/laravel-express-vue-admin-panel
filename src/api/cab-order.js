@@ -1,3 +1,4 @@
+import { queryMaker } from '@/utils/former';
 import request from '@/utils/request';
 
 const url = 'cab-orders'
@@ -10,7 +11,7 @@ export function getCabOrdersByPagination(page, query = "", sortParams = "", filt
         urlParams += `${sortParams}`;
     }
     urlParams += queryMaker(filterAttributes);
-    
+
     return request({
         url: `/admin-api/${url}/?${urlParams}`,
         method: 'get',
